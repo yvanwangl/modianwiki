@@ -25,7 +25,7 @@ class App extends React.Component<object & RouteComponentProps<object>, AppState
         return (
             <div>
                 <header className='App-header'>
-                    <h1>摩点 wiki 系统</h1>
+                    <h1>摩点 wiki</h1>
                 </header>
                 <main className='App-content'>
                     <Switch>

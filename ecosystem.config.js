@@ -13,6 +13,7 @@ module.exports = {
                 "PROXY_PORT": 8090,
                 "PORT": 8088,
                 "NODE_ENV": "production",
+                "LAN_HU": "https://lanhuapp.com/web/#/item?tid=6fe1eae5-9080-4863-bb05-ec6f978189ae",
             }
         }
     ]

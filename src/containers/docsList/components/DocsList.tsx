@@ -2,9 +2,11 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
-import { Button, Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 import DocsListStore from '../DocsListStore';
 import { userAuth } from '../../../utils/util';
+const { lanhuLink } = require('../../../system.config');
+const lanHuImg = require('./lanhu.png');
 import './index.css';
 
 export interface DocsListProps {
@@ -45,7 +47,13 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
         Modal.confirm({
             content: '确认要删除吗？',
             onOk: () => {
-                deleteDoc(docId, docsTypeId, docsVersionId);
+                deleteDoc(docId, docsTypeId, docsVersionId).then(
+                    (result) => {
+                        if (result.success) {
+                            message.success('文档删除成功！');
+                        }
+                    }
+                );
             },
             okText: '确认',
             cancelText: '取消',
@@ -76,6 +84,9 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
         const { docsList: { docsItemList } } = this.props;
         return (
             <div className='DocsList-container'>
+                <a className='Home-lanhuButton' target='_blank' href={lanhuLink}>
+                    <img src={lanHuImg} alt="蓝湖传送门" />
+                </a>
                 {(authenticate && admin && <Button className='Home-uploadButton' onClick={this.handleUploadButton}> 上传文档 </Button>)}
                 {
                     docsItemList.map((docs: any) => (
@@ -93,7 +104,7 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
                                                             <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
                                                             <span className='DcosList-dotLine'></span>
                                                             <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
-                                                            {(authenticate && admin && <span className='DocsList-deleteBtn' onClick={() => this.handleDeleteButton(docs._id, docsTypeId, docsVersionId)}> 删除文档 </span>)}
+                                                            {(authenticate && admin && <span className='DocsList-deleteBtn' onClick={() => this.handleDeleteButton(docs._id, docsTypeId, docsVersionId)}> 删除 </span>)}
                                                         </li>
                                                     )
                                                 }

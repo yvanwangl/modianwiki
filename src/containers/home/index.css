@@ -5,8 +5,21 @@
     width: 100%;
     padding-top: 60px;
 }
+
 .Home-container .Home-uploadButton {
     position: absolute;
     top: 20px;
     right: 30px;
+}
+
+.Home-lanhuButton {
+    position: absolute;
+    top: 23px;
+    right: 134px;
+    display: none
+}
+
+.Home-lanhuButton img {
+    width: 50px;
+    right: 100px;
 }

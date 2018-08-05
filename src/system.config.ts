@@ -29,5 +29,6 @@ module.exports = {
     httpServer: debug ? httpServerDev : httpServerProd,
     defaultOptions: debug ? defaultOptionsDev : defaultOptionsProd,
     limit: 30,
-    registor: false
+    registor: false,
+    lanhuLink: process.env.LAN_HU,
 };

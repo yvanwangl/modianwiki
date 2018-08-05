@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
 import UploadDocsStore from '../UploadDocsStore';
 import { FormComponentProps } from 'antd/lib/form';
-import { Form, Input, Upload, Button, Icon, Select, Modal } from 'antd';
+import { Form, Input, Upload, Button, Icon, Select, Modal, message } from 'antd';
 import DocsNameModal from './DocsNameModal';
 const { httpServer } = require('../../../system.config');
 import './index.css';
@@ -77,10 +77,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
             if (!err) {
                 doSubmitDocsInfo(values).then((result) => {
                     if (result.success) {
-                        Modal.success({
-                            title: '上传成功',
-                            content: '恭喜小主，上传成功啦 😊'
-                        });
+                        message.success('恭喜小主，上传成功啦 😊');
                         form.resetFields();
                         history.push('/');
                     } else {
