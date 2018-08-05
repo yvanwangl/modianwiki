@@ -1,11 +1,10 @@
-.DocsList-wrapper,
-.DocsVersions-wrapper {
+.DocsList-wrapper, .DocsVersions-wrapper {
     position: relative;
     font-size: 16px;
     cursor: pointer;
 }
-.DocsList-wrapper::before,
-.DocsVersions-wrapper::before {
+
+.DocsList-wrapper::before, .DocsVersions-wrapper::before {
     position: absolute;
     top: 9px;
     left: -16px;
@@ -18,26 +17,28 @@
     transition: all ease .5s;
     transform-origin: 6px 3px;
 }
-.DocsList-wrapper.active::before,
-.DocsVersions-wrapper.active::before {
+
+.DocsList-wrapper.active::before, .DocsVersions-wrapper.active::before {
     transform: rotate(0deg);
 }
-.DocsList-wrapper.active>ul,
-.DocsVersions-wrapper.active>ul {
+
+.DocsList-wrapper.active>ul, .DocsVersions-wrapper.active>ul {
     max-height: 500px;
     transition: max-height 0.5s ease-in;
 }
-.DocsList-wrapper>ul,
-.DocsVersions-wrapper>ul {
+
+.DocsList-wrapper>ul, .DocsVersions-wrapper>ul {
     max-height: 0;
     transition: max-height 0.4s ease-out;
     overflow: hidden;
     padding-left: 20px;
 }
+
 .DocsList-wrapper>ul>li {
     list-style: none;
     margin: 0;
 }
+
 .DocsVersions-wrapper>ul>li {
     list-style: none;
     margin: 0;
@@ -48,6 +49,7 @@
     line-height: 30px;
     font-size: 14px;
 }
+
 .DocsList-version {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -55,6 +57,7 @@
     max-width: 150px;
     padding-right: 10px;
 }
+
 .DcosList-dotLine {
     display: inline-block;
     flex-grow: 1;
@@ -62,8 +65,13 @@
     flex-flow: 1;
     border-bottom: 1px dashed #ccc;
 }
+
 .DocsList-createInstance {
     padding-left: 10px;
     color: #ccc;
 }
 
+.DocsList-deleteBtn {
+    color: #1890ff;
+    margin-left: 20px;
+}

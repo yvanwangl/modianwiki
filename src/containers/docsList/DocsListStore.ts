@@ -11,7 +11,7 @@ export interface DocsItemModel {
 
 class DocsListStore {
 
-    @observable docsItemList: Array<DocsItemModel> =[];
+    @observable docsItemList: Array<DocsItemModel> = [];
 
     rootStore: object;
 
@@ -23,10 +23,26 @@ class DocsListStore {
     @action.bound
     async fetchDocsList() {
         let { success, data } = await request('/api/docsList/all');
-        if(success){
+        if (success) {
             this.docsItemList = data;
         }
-        return {success, data};
+        return { success, data };
+    }
+
+    @action.bound
+    async deleteDoc(docId: string, docsTypeId: string, docsVersionId: string) {
+        let { success, data } = await request('/api/submitDocsInfo/delDocsInfo', {
+            method: 'post',
+            body: JSON.stringify({
+                docId,
+                docsTypeId,
+                docsVersionId,
+            })
+        });
+        if (success) {
+            this.fetchDocsList();
+        }
+        return { success, data };
     }
 
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import DocsListStore from '../DocsListStore';
 import { userAuth } from '../../../utils/util';
 import './index.css';
@@ -40,17 +40,29 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
         history.push('/upload');
     };
 
+    handleDeleteButton = (docId: string, docsTypeId: string, docsVersionId: string) => {
+        const { docsList: { deleteDoc } } = this.props;
+        Modal.confirm({
+            content: '确认要删除吗？',
+            onOk: () => {
+                deleteDoc(docId, docsTypeId, docsVersionId);
+            },
+            okText: '确认',
+            cancelText: '取消',
+        })
+    };
+
     // 对文档类型进行排序：产品、交互、设计
     sortDocsTypeList = (arrayList: Array<Object>) => {
         let sortType = ['产品', '交互', '设计'];
         let result: Array<Object> = [];
         arrayList.map((type: any) => {
             let index = sortType.findIndex((item) => item === type.docsTypeName);
-            if(index > -1){
+            if (index > -1) {
                 result[index] = type;
             } else {
                 sortType.push(type.docsTypeName);
-                result[sortType.length-1] = type;
+                result[sortType.length - 1] = type;
             }
         });
         return result;
@@ -71,20 +83,22 @@ class DocsList extends React.Component<DocsListProps & RouteComponentProps<any>,
                             {docs.docsName}
                             <ul>
                                 {
-                                    this.sortDocsTypeList(docs.docsTypes).map(({docsTypeId, docsTypeName, versions}: any, index: number) =>
+                                    this.sortDocsTypeList(docs.docsTypes).map(({ docsTypeId, docsTypeName, versions }: any, index: number) =>
                                         <li key={docsTypeId} className='DocsVersions-wrapper' onClick={(e) => this.handleDocsClick(e)}>
                                             {docsTypeName}
                                             <ul>
                                                 {
-                                                    versions.map(({link, version, createInstance}: any, vindex: number) =>
-                                                    <li key={vindex}>
-                                                        <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
-                                                        <span className='DcosList-dotLine'></span>
-                                                        <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
-                                                    </li>) 
+                                                    versions.map(({ link, version, createInstance, _id: docsVersionId }: any, vindex: number) =>
+                                                        <li key={vindex}>
+                                                            <a href={link} target='_blank' title={version} className='DocsList-version'> {version} </a>
+                                                            <span className='DcosList-dotLine'></span>
+                                                            <span className='DocsList-createInstance'>{moment(createInstance).format('YYYY-MM-DD HH:mm')}</span>
+                                                            {(authenticate && admin && <span className='DocsList-deleteBtn' onClick={() => this.handleDeleteButton(docs._id, docsTypeId, docsVersionId)}> 删除文档 </span>)}
+                                                        </li>
+                                                    )
                                                 }
-                                            </ul>  
-                                        </li>               
+                                            </ul>
+                                        </li>
                                     )
                                 }
                             </ul>

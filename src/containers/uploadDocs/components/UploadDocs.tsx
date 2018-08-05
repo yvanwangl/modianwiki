@@ -75,8 +75,8 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!err) {
-                doSubmitDocsInfo(values).then((result)=> {
-                    if(result.success){
+                doSubmitDocsInfo(values).then((result) => {
+                    if (result.success) {
                         Modal.success({
                             title: '上传成功',
                             content: '恭喜小主，上传成功啦 😊'
@@ -88,14 +88,14 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                             title: '上传失败',
                             content: result.errorCode
                         });
-                    }    
+                    }
                 },
-                ()=> {
-                    Modal.error({
-                        title: '上传失败',
-                        content: '由于外力影响，上传失败啦 😢'
+                    () => {
+                        Modal.error({
+                            title: '上传失败',
+                            content: '由于外力影响，上传失败啦 😢'
+                        });
                     });
-                });
             }
         });
     }
@@ -125,12 +125,12 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                 filename: info.file.response.data.filename
             });
         } else if (info.file.status === 'error') {
-            
+
         }
     };
 
     componentWillUpdate(nextProps: UploadDocsProps & FormComponentProps) {
-        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, newDocsTypeId,  resetNewDocsId } } = nextProps;
+        const { form: { setFieldsValue }, uploadDocs: { newDocsNameId, newDocsTypeId, resetNewDocsId } } = nextProps;
         if (newDocsNameId) {
             setFieldsValue({
                 docsNameId: newDocsNameId
@@ -152,6 +152,13 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
     }
 
     modalCreator = () => <DocsNameModal />
+
+    versionValidator = (rule: object, value: string, callback: Function) => {
+        if (value.indexOf('/') > 0) {
+            callback('版本名称中不能包含 /');
+        }
+        callback();
+    }
 
     render() {
         const { form: { getFieldDecorator }, uploadDocs: { docsNameList, docsTypeList } } = this.props;
@@ -182,7 +189,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         style={{ textAlign: 'right' }}
                     >
-                        <Button onClick={()=> this.handleAddName('docsName')}>
+                        <Button onClick={() => this.handleAddName('docsName')}>
                             + 文档名称
                         </Button>
                     </FormItem>
@@ -210,7 +217,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         style={{ textAlign: 'right' }}
                     >
-                        <Button onClick={()=> this.handleAddName('docsType')}>
+                        <Button onClick={() => this.handleAddName('docsType')}>
                             + 文档类型
                         </Button>
                     </FormItem>
@@ -219,7 +226,12 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                         label="版本号"
                     >
                         {getFieldDecorator('docsVersion', {
-                            rules: [{ required: true, message: '请输入文档版本号' }],
+                            rules: [
+                                { required: true, message: '请输入文档版本号' },
+                                {
+                                    validator: this.versionValidator
+                                }
+                            ],
                         })(
                             <Input
                                 placeholder="文档版本"
@@ -274,7 +286,7 @@ class UploadDocs extends React.Component<UploadDocsProps & FormComponentProps & 
                     <FormItem
                         {...buttonItemLayout}
                     >
-                        <Button type="primary" htmlType="submit" style={{marginRight: 20}}>
+                        <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
                             提交
                         </Button>
                         <Button onClick={this.handleCancel}>
